@@ -1,7 +1,7 @@
 package bsu.rfact.java.laba3;
 
 import javax.swing.table.AbstractTableModel;
-
+import static java.lang.Math.*;
 
 public class GornerTableModel extends AbstractTableModel {
 
@@ -32,27 +32,63 @@ public class GornerTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return 0;
+        return new Double(Math.ceil((to - from) / step)).intValue() + 1;
     }
 
     @Override
     public int getColumnCount() {
-        return 0;
+        return 4;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return null;
+        double x = from + step * rowIndex;
+        if (columnIndex == 0){
+            return x;
+        }
+        if (columnIndex == 1){
+            Double result = 0.;
+            for (Double a : coefficients){
+                result = result * x + a;
+            }
+            return result;
+        }
+        if (columnIndex == 2){
+            Double result = 0.;
+            for (Double a : coefficients){
+                result += pow(x, a);
+            }
+            return result;
+        }else{
+            Double result1 = 0.,
+                    result2 = 0.;
+            for (Double a : coefficients){
+                result1 = result1 * x + a;
+            }
+            for (Double a : coefficients){
+                result2 += pow(x, a);
+            }
+            return result1 - result2;
+        }
     }
 
     @Override
     public String getColumnName(int column) {
-        return super.getColumnName(column);
+        switch (column){
+            case 0:
+                return "X value";
+            case 1:
+                return "Horner polynomial value";
+            case 2:
+                return "Power polynomial value";
+            default:
+                return "Difference between 2 polynomial values";
+        }
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return super.getColumnClass(columnIndex);
+        return Double.class;
     }
 }
 
