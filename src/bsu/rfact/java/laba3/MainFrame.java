@@ -4,9 +4,7 @@ import javax.swing.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -59,6 +57,38 @@ public class MainFrame extends JFrame {
         };
         saveToTextMenuItem = fileMenu.add(saveToTextAction);
         saveToTextMenuItem.setEnabled(false);
+
+
+    Action saveToGraphicsAction = new AbstractAction("Save data for plotting") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (fileChooser == null){
+                fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File("File_2.bin"));
+            }
+            if (fileChooser.showSaveDialog(MainFrame.this) ==
+                    JFileChooser.APPROVE_OPTION){
+                saveToGraphicsFile(fileChooser.getSelectedFile());
+            }
+        }
+    };
+    saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
+        saveToGraphicsMenuItem.setEnabled(false);
+
+}
+
+    private void saveToGraphicsFile(File selectedFile) {
+        try {
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(selectedFile));
+            for (int i = 0; i < data.getRowCount(); i++) {
+                for (int j = 0; j < data.getColumnCount(); j++) {
+                    out.writeChars(formatter.format(data.getValueAt(i, j)));
+                }
+                out.close();
+            }
+        } catch (IOException e) {
+            System.out.println("'File_2.bin' not found..");
+        }
     }
 
     public void saveToTextFile(File selectedFile) {
