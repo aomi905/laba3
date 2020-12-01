@@ -93,11 +93,11 @@ public class MainFrame extends JFrame {
         textFieldFrom = new JTextField("0.0", 10);
         textFieldFrom.setMaximumSize(textFieldFrom.getPreferredSize());
         JLabel labelForTo = new JLabel("to:");
-        textFieldFrom = new JTextField("1.0", 10);
-        textFieldFrom.setMaximumSize(textFieldFrom.getPreferredSize());
+        textFieldTo = new JTextField("1.0", 10);
+        textFieldTo.setMaximumSize(textFieldFrom.getPreferredSize());
         JLabel labelForStep = new JLabel("with step:");
-        textFieldFrom = new JTextField("0.1", 10);
-        textFieldFrom.setMaximumSize(textFieldFrom.getPreferredSize());
+        textFieldStep = new JTextField("0.1", 10);
+        textFieldStep.setMaximumSize(textFieldFrom.getPreferredSize());
 
         Box hBoxRange = Box.createHorizontalBox();
         hBoxRange.setBorder(BorderFactory.createBevelBorder(1));
@@ -219,6 +219,24 @@ public class MainFrame extends JFrame {
     }
 
     public static void main(String[] args) {
+
+        if(args.length == 0){
+            System.out.println("It is impossible to tabulate a polynomial for which no coefficient is given!");
+            System.exit(-1);
+        }
+        Double[] coefficients = new Double[args.length];
+        int i = 0;
+        try{
+            for(String arg : args){
+                coefficients[i++] = Double.parseDouble(arg);
+            }
+        }catch (NumberFormatException e){
+            System.out.println("Error converting a string '" + args[i] + "' to a Double");
+            System.exit(-2);
+        }
+        MainFrame frame = new MainFrame(coefficients);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
 
     }
 }
