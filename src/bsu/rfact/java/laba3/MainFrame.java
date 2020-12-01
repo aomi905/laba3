@@ -88,6 +88,35 @@ public class MainFrame extends JFrame {
         searchValueMenuItem = tableMenu.add(searchValueAction);
         searchValueMenuItem.setEnabled(false);
 
+        JLabel labelForFrom = new JLabel("X varies from:");
+        textFieldFrom = new JTextField("0.0", 10);
+        textFieldFrom.setMaximumSize(textFieldFrom.getPreferredSize());
+        JLabel labelForTo = new JLabel("to:");
+        textFieldFrom = new JTextField("1.0", 10);
+        textFieldFrom.setMaximumSize(textFieldFrom.getPreferredSize());
+        JLabel labelForStep = new JLabel("with step:");
+        textFieldFrom = new JTextField("0.1", 10);
+        textFieldFrom.setMaximumSize(textFieldFrom.getPreferredSize());
+
+        Box hBoxRange = Box.createHorizontalBox();
+        hBoxRange.setBorder(BorderFactory.createBevelBorder(1));
+        hBoxRange.add(labelForFrom);
+        hBoxRange.add(Box.createHorizontalStrut(10));
+        hBoxRange.add(textFieldFrom);
+        hBoxRange.add(Box.createHorizontalStrut(20));
+        hBoxRange.add(labelForTo);
+        hBoxRange.add(Box.createHorizontalStrut(10));
+        hBoxRange.add(textFieldTo);
+        hBoxRange.add(Box.createHorizontalStrut(20));
+        hBoxRange.add(labelForStep);
+        hBoxRange.add(Box.createHorizontalStrut(10));
+        hBoxRange.add(textFieldStep);
+        hBoxRange.add(Box.createHorizontalGlue());
+        hBoxRange.setPreferredSize(new Dimension(
+                new Double(hBoxRange.getMaximumSize().getWidth()).intValue(),
+                new Double(hBoxRange.getMinimumSize().getHeight()).intValue() * 2));
+        getContentPane().add(hBoxRange, BorderLayout.NORTH);
+
     }
 
     private void saveToGraphicsFile(File selectedFile) {
