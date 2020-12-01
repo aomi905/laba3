@@ -75,7 +75,20 @@ public class MainFrame extends JFrame {
     saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
         saveToGraphicsMenuItem.setEnabled(false);
 
-}
+        Action searchValueAction = new AbstractAction("Find the value of a polunomial") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String value = JOptionPane.showInputDialog(MainFrame.this,
+                        "Enter a value to search", "Value search",
+                        JOptionPane.QUESTION_MESSAGE);
+                renderer.setNeedle(value);
+                getContentPane().repaint();
+            }
+        };
+        searchValueMenuItem = tableMenu.add(searchValueAction);
+        searchValueMenuItem.setEnabled(false);
+
+    }
 
     private void saveToGraphicsFile(File selectedFile) {
         try {
