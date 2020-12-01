@@ -8,6 +8,7 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
     private static final int WIDTH = 1000,
@@ -116,6 +117,48 @@ public class MainFrame extends JFrame {
                 new Double(hBoxRange.getMaximumSize().getWidth()).intValue(),
                 new Double(hBoxRange.getMinimumSize().getHeight()).intValue() * 2));
         getContentPane().add(hBoxRange, BorderLayout.NORTH);
+
+        JButton buttonCalc = new JButton("Calculate");
+        buttonCalc.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    Double from = Double.parseDouble(textFieldFrom.getText()),
+                            to = Double.parseDouble(textFieldTo.getText()),
+                            step = Double.parseDouble(textFieldStep.getText());
+                    data = new HornerTableModel(from, to, step, MainFrame.this.coefficients);
+                    JTable table = new JTable(data);
+                    table.setDefaultRenderer(Double.class, renderer);
+                    table.setRowHeight(30);
+                    hBoxResult.removeAll();
+                    hBoxResult.add(new JScrollPane(table));
+                    getContentPane().validate();
+                    saveToTextMenuItem.setEnabled(true);
+                    saveToGraphicsMenuItem.setEnabled(true);
+                    searchValueMenuItem.setEnabled(true);
+                } catch (NumberFormatException numberFormatException) {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Floating point format error", "Wrong number format",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
+        JButton buttonReset = new JButton("Reset");
+        buttonReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textFieldFrom.setText("0.0");
+                textFieldTo.setText("1.0");
+                textFieldStep.setText("0.1");
+                hBoxResult.removeAll();
+                hBoxResult.add(new JPanel());
+                saveToTextMenuItem.setEnabled(false);
+                saveToGraphicsMenuItem.setEnabled(false);
+                searchValueMenuItem.setEnabled(false);
+                getContentPane().validate();
+            }
+        });
 
     }
 
