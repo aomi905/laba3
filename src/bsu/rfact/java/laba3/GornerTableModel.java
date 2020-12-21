@@ -10,8 +10,8 @@ public class GornerTableModel extends AbstractTableModel {
             to,
             step;
 
-    public GornerTableModel(Double from, Double to,
-                            Double step, Double[] coefficients){
+    public GornerTableModel(Double from, Double to, Double step,
+                            Double[] coefficients){
         this.from = from;
         this.to = to;
         this.step = step;
@@ -31,14 +31,33 @@ public class GornerTableModel extends AbstractTableModel {
     }
 
     @Override
-    public int getRowCount() {
-        return new Double(Math.ceil((to - from) / step)).intValue() + 1;
+    public Class<?> getColumnClass(int columnIndex) {
+        return Double.class;
     }
 
     @Override
     public int getColumnCount() {
         return 4;
     }
+
+        @Override
+        public String getColumnName(int column) {
+            switch (column){
+                case 0:
+                    return "X value";
+                case 1:
+                    return "Gorner polynomial value";
+                case 2:
+                    return "Power polynomial value";
+                default:
+                    return "Difference between 2 polynomial values";
+            }
+        }
+
+        @Override
+        public int getRowCount() {
+            return new Double(Math.ceil((to - from) / step)).intValue() + 1;
+        }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -72,23 +91,5 @@ public class GornerTableModel extends AbstractTableModel {
         }
     }
 
-    @Override
-    public String getColumnName(int column) {
-        switch (column){
-            case 0:
-                return "X value";
-            case 1:
-                return "Horner polynomial value";
-            case 2:
-                return "Power polynomial value";
-            default:
-                return "Difference between 2 polynomial values";
-        }
-    }
-
-    @Override
-    public Class<?> getColumnClass(int columnIndex) {
-        return Double.class;
-    }
 }
 
