@@ -7,8 +7,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
-public class GornerTableCellRenderer implements TableCellRenderer{
-
+public class GornerTableCellRenderer implements TableCellRenderer {
     private String needle = null;
     private JLabel label = new JLabel();
     private JPanel panel = new JPanel();
@@ -32,9 +31,10 @@ public class GornerTableCellRenderer implements TableCellRenderer{
         this.whichSearch = whichSearch;
     }
 
-
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(JTable table, Object value,
+                                                   boolean isSelected, boolean hasFocus,
+                                                   int row, int column) {
         String formattedDouble = formatter.format(value);
         if (Double.parseDouble(formattedDouble) < 0.){
             label.setText(formattedDouble);
@@ -51,6 +51,7 @@ public class GornerTableCellRenderer implements TableCellRenderer{
             panel.add(label);
             panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         }
+
         if (!this.whichSearch) {
             if (needle != null && needle.equals(formattedDouble))
                 panel.setBackground(Color.ORANGE);
@@ -72,5 +73,4 @@ public class GornerTableCellRenderer implements TableCellRenderer{
         }
         return panel;
     }
-
 }

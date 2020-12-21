@@ -1,13 +1,13 @@
 package bsu.rfact.java.laba3;
 
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.text.DecimalFormat;
-import java.awt.event.ActionListener;
-import javax.imageio.ImageIO;
 
 public class MainFrame extends JFrame {
     private static final int WIDTH = 1000,
@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
     private ImageIcon icon = null;
 
     public MainFrame(Double[] coefficients){
-        super("Tabulating a polynomial on a segment in 2 ways..");
+        super("Tabulating a polynomial on a segment in 2 ways");
 
         this.coefficients = coefficients;
 
@@ -64,21 +64,20 @@ public class MainFrame extends JFrame {
         saveToTextMenuItem = fileMenu.add(saveToTextAction);
         saveToTextMenuItem.setEnabled(false);
 
-
-    Action saveToGraphicsAction = new AbstractAction("Save data for plotting") {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (fileChooser == null){
-                fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File("F"));
+        Action saveToGraphicsAction = new AbstractAction("Save data for plotting") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (fileChooser == null){
+                    fileChooser = new JFileChooser();
+                    fileChooser.setCurrentDirectory(new File("F"));
+                }
+                if (fileChooser.showSaveDialog(MainFrame.this) ==
+                        JFileChooser.APPROVE_OPTION){
+                    saveToGraphicsFile(fileChooser.getSelectedFile());
+                }
             }
-            if (fileChooser.showSaveDialog(MainFrame.this) ==
-                    JFileChooser.APPROVE_OPTION){
-                saveToGraphicsFile(fileChooser.getSelectedFile());
-            }
-        }
-    };
-    saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
+        };
+        saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
         saveToGraphicsMenuItem.setEnabled(false);
 
         Action saveToCSVAction = new AbstractAction("Save to CSV file") {
@@ -98,7 +97,6 @@ public class MainFrame extends JFrame {
         saveToCSVMenuItem.setEnabled(false);
 
         Action searchValueAction = new AbstractAction("Find the value") {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 String value = JOptionPane.showInputDialog(MainFrame.this,
@@ -140,18 +138,16 @@ public class MainFrame extends JFrame {
         searchCloseValueMenuItem = tableMenu.add(searchCloseValueAction);
         searchCloseValueMenuItem.setEnabled(false);
 
-
         Action aboutTheProgramAction = new AbstractAction("About the program") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Image image = ImageIO.read(new File("src/bsu/fract/java/laba3/photo.jpg"));
+                    Image image = ImageIO.read(new File("src/bsu/rfact/java/laba3/photo.jpg"));
                     image = image.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
                     icon = new ImageIcon(image);
 
-
                     JOptionPane.showMessageDialog(MainFrame.this,
-                            "Suravets Anna\nfrom group #8", "About the student",
+                            "Suravets Anna\nfrom group №8", "About the student",
                             JOptionPane.INFORMATION_MESSAGE, icon);
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -168,7 +164,7 @@ public class MainFrame extends JFrame {
         textFieldTo = new JTextField("4.0", 10);
         textFieldTo.setMaximumSize(textFieldFrom.getPreferredSize());
         JLabel labelForStep = new JLabel("with step:");
-        textFieldStep = new JTextField("0.4", 10);
+        textFieldStep = new JTextField("0.1", 10);
         textFieldStep.setMaximumSize(textFieldFrom.getPreferredSize());
 
         Box hBoxRange = Box.createHorizontalBox();
@@ -227,7 +223,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 textFieldFrom.setText("0.0");
                 textFieldTo.setText("4.0");
-                textFieldStep.setText("0.4");
+                textFieldStep.setText("0.1");
                 hBoxResult.removeAll();
                 hBoxResult.add(new JPanel());
                 saveToTextMenuItem.setEnabled(false);
@@ -256,24 +252,22 @@ public class MainFrame extends JFrame {
         hBoxResult.add(new JPanel());
         hBoxResult.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
         getContentPane().add(hBoxResult, BorderLayout.CENTER);
-
     }
 
+
     private void saveToGraphicsFile(File selectedFile) {
-        try {
+        try{
             DataOutputStream out = new DataOutputStream(new FileOutputStream(selectedFile));
-            for (int i = 0; i < data.getRowCount(); i++) {
+            for (int i = 0; i < data.getRowCount(); i++){
                 for (int j = 0; j < data.getColumnCount(); j++) {
-                    out.writeChars(formatter.format(data.getValueAt(i, j)));
+                    out.writeDouble((Double)data.getValueAt(i, j));
                 }
             }
             out.close();
-
         } catch (IOException e) {
             System.out.println("File couldn't be created");
         }
     }
-
     private void saveToTextFile(File selectedFile) {
         try {
             FileWriter writer = new FileWriter(selectedFile);
@@ -300,7 +294,6 @@ public class MainFrame extends JFrame {
             System.out.println("File couldn't be created");
         }
     }
-
     private void saveToCSVFile(File selectedFile) {
         try {
             FileWriter writer = new FileWriter(selectedFile);
@@ -318,8 +311,8 @@ public class MainFrame extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         if(args.length == 0){
             System.out.println("It is impossible to tabulate a polynomial for which no coefficient is given!");
             System.exit(-1);
@@ -337,6 +330,5 @@ public class MainFrame extends JFrame {
         MainFrame frame = new MainFrame(coefficients);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
     }
 }
